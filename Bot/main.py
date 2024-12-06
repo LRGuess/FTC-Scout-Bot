@@ -58,6 +58,15 @@ async def team_info_by_number(ctx: discord.Interaction, *, team_number: int):
     response = requests.post(URL, json={'query': query})
     data = response.json()
 
+    try:
+        teamByNumber = data['data']['teamByNumber']
+    except:
+        teamByNumber = None
+    
+    if teamByNumber == None or data['error']:
+        embed = discord.Embed(title="Team # not found", description="Please enter a valid team number", color=0xfc585b)
+        await ctx.followup.send(embed=embed)
+
     team_name = data['data']['teamByNumber']['name']
     school_name = data['data']['teamByNumber']['schoolName']
     sponsors = data['data']['teamByNumber']['sponsors']
@@ -99,6 +108,7 @@ async def team_info_by_number(ctx: discord.Interaction, *, team_number: int):
 
     await ctx.followup.send(embed=embed)
 
+#@bot.tree.command(name="teaminfo", description="Generalized team info")
 
 
 @bot.event
