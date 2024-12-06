@@ -167,6 +167,15 @@ async def season_info(ctx: discord.Interaction, *, team_number: int, season: int
 
     await ctx.followup.send(embed=embed)
 
+@bot.tree.command(name="gamemanual", description="Get a link to the game manual")
+async def game_manual(ctx: discord.Interaction):
+    await ctx.response.defer()
+
+    embed = discord.Embed(title="Game Manual", description="Here is the link to the game manual", color=0xf57f26)
+    embed.add_field(name="Game Manual", value="[Game Manual](https://ftc-resources.firstinspires.org/file/ftc/game/manual)", inline=False)
+
+    await ctx.followup.send(embed=embed)
+
 @bot.tree.command(name='about', description='Get information about the bot')
 async def about(ctx: discord.Interaction):
     await ctx.response.defer()
@@ -186,6 +195,7 @@ async def help(ctx: discord.Interaction):
     embed = discord.Embed(title="Help", description="Here are the commands you can use with the bot", color=0x00ff00)
     embed.add_field(name="/teaminfo <team_number>", value="Get general information about a team", inline=False)
     embed.add_field(name="/seasoninfo <team_number> <season>", value="Get season statistics for a team", inline=False)
+    embed.add_field(name="/gamemanual", value="Get a link to the game manual", inline=False)
     embed.add_field(name="/about", value="Get information about the bot", inline=False)
 
     embed.set_footer(text=universal_footer)
