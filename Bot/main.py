@@ -167,6 +167,31 @@ async def season_info(ctx: discord.Interaction, *, team_number: int, season: int
 
     await ctx.followup.send(embed=embed)
 
+@bot.tree.command(name='about', description='Get information about the bot')
+async def about(ctx: discord.Interaction):
+    await ctx.response.defer()
+
+    embed = discord.Embed(title="About", description="This bot is a Discord bot that uses the FTC Scout API to get information about teams and their statistics", color=0x00ff00)
+    embed.add_field(name="Author", value="Liam Ramirez-Guess from 22212", inline=False)
+    embed.add_field(name="Support Server", value="https://discord.gg/D4WUX7r3", inline=False)
+    embed.add_field(name="FTC Scout", value="https://ftcscout.org", inline=False)
+    embed.add_field(name="Version", value="1.0", inline=False)
+
+    await ctx.followup.send(embed=embed)
+
+@bot.tree.command(name="help", description="Get help with the bot")
+async def help(ctx: discord.Interaction):
+    await ctx.response.defer()
+
+    embed = discord.Embed(title="Help", description="Here are the commands you can use with the bot", color=0x00ff00)
+    embed.add_field(name="/teaminfo <team_number>", value="Get general information about a team", inline=False)
+    embed.add_field(name="/seasoninfo <team_number> <season>", value="Get season statistics for a team", inline=False)
+    embed.add_field(name="/about", value="Get information about the bot", inline=False)
+
+    embed.set_footer(text=universal_footer)
+
+    ctx.followup.send(embed=embed)
+
 
 @bot.event
 async def on_ready():
