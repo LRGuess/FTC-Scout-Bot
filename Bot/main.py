@@ -352,6 +352,8 @@ async def help(ctx: discord.Interaction):
     embed = discord.Embed(title="Help", description="Here are the commands you can use with the bot", color=0x00ff00)
     embed.add_field(name="/teaminfo <team_number>", value="Get general information about a team", inline=False)
     embed.add_field(name="/seasoninfo <team_number> <season>", value="Get season statistics for a team", inline=False)
+    embed.add_field(name="/teamsearch <team_name>", value="Search for a team by name", inline=False)
+    embed.add_field(name="/eventsearch <event_name>", value="Search for an event by name", inline=False)
     embed.add_field(name="/gamemanual", value="Get a link to the game manual", inline=False)
     embed.add_field(name="/about", value="Get information about the bot", inline=False)
 
