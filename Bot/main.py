@@ -15,6 +15,7 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 
 universal_footer = "Made by Liam from 22212, FTC Scout API"
 
+Regions
 class Paginator(View):
     def __init__(self, embeds):
         super().__init__(timeout=None)
@@ -39,11 +40,6 @@ class Paginator(View):
             self.current_page += 1
             self.update_buttons()
             await interaction.response.edit_message(embed=self.embeds[self.current_page], view=self)
-
-@bot.tree.command(name='ping')
-async def ping(ctx: discord.Interaction):
-    await ctx.response.defer()
-    await ctx.followup.send('Pong!')
 
 @bot.tree.command(name='teaminfo', description='Generalized team info')
 async def team_info_by_number(ctx: discord.Interaction, *, team_number: int):
