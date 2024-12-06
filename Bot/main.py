@@ -66,6 +66,7 @@ async def team_info_by_number(ctx: discord.Interaction, *, team_number: int):
     if teamByNumber == None or data['error']:
         embed = discord.Embed(title="Team # not found", description="Please enter a valid team number", color=0xfc585b)
         await ctx.followup.send(embed=embed)
+        return
 
     team_name = data['data']['teamByNumber']['name']
     school_name = data['data']['teamByNumber']['schoolName']
@@ -75,7 +76,6 @@ async def team_info_by_number(ctx: discord.Interaction, *, team_number: int):
 
 
     #Location
-    venue = data['data']['teamByNumber']['location']['venue']
     city = data['data']['teamByNumber']['location']['city']
     state = data['data']['teamByNumber']['location']['state']
     country = data['data']['teamByNumber']['location']['country']
@@ -107,9 +107,6 @@ async def team_info_by_number(ctx: discord.Interaction, *, team_number: int):
             embed.add_field(name="Awards", value=awards_description, inline=False)
 
     await ctx.followup.send(embed=embed)
-
-#@bot.tree.command(name="teaminfo", description="Generalized team info")
-
 
 @bot.event
 async def on_ready():
