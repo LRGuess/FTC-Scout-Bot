@@ -12,6 +12,7 @@ intents = discord.Intents.default()
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
+universal_footer = "Made by Liam from 22212, FTC Scout API"
 
 @bot.tree.command(name='ping')
 async def ping(ctx: discord.Interaction):
@@ -63,7 +64,7 @@ async def team_info_by_number(ctx: discord.Interaction, *, team_number: int):
     except:
         teamByNumber = None
     
-    if teamByNumber == None or data['error']:
+    if teamByNumber == None:
         embed = discord.Embed(title="Team # not found", description="Please enter a valid team number", color=0xfc585b)
         await ctx.followup.send(embed=embed)
         return
@@ -106,7 +107,64 @@ async def team_info_by_number(ctx: discord.Interaction, *, team_number: int):
         if awards_description:
             embed.add_field(name="Awards", value=awards_description, inline=False)
 
+    embed.set_footer(text=universal_footer)
+
     await ctx.followup.send(embed=embed)
+
+@bot.tree.command(name='seasoninfo', description='Get season statistics for a certain team')
+async def season_info(ctx: discord.Interaction, *, team_number: int, season: int):
+    await ctx.response.defer()
+
+    query = '''
+    query teamByNumber {
+        teamByNumber(number: ''' + str(team_number) +''') {
+            quickStats(season: ''' + str(season) + ''') {
+                tot{value, rank},
+                auto{value, rank},
+                dc{value, rank},
+                eg{value, rank},
+                count
+            }
+        }
+    }
+    '''
+
+    response = requests.post(URL, json={'query': query})
+    data = response.json()
+
+    try:
+        teamByNumber = data['data']['teamByNumber']
+    except:
+        teamByNumber = None
+    
+    if teamByNumber == None:
+        embed = discord.Embed(title="Team # not found", description="Please enter a valid team number", color=0xfc585b)
+        await ctx.followup.send(embed=embed)
+        return
+    
+    total = data['data']['teamByNumber']['quickStats']['tot']
+    autonomous = data['data']['teamByNumber']['quickStats']['auto']
+    driver_control = data['data']['teamByNumber']['quickStats']['dc']
+    end_game = data['data']['teamByNumber']['quickStats']['eg']
+    count = data['data']['teamByNumber']['quickStats']['count']
+
+    embed = discord.Embed(title=f"Season Stats for {team_number}", description=f":calendar_spiral:  Season: {season}", )
+    if total:
+        embed.add_field(name="Total Score:", value=f":1234: OPR: {round(total['value'], 3)} \n ---------- \n :medal: Rank: {total['rank']}", inline=False)
+    if autonomous:
+        embed.add_field(name="Auto:", value=f":1234: OPR: {round(autonomous['value'], 3)} \n ---------- \n :medal: Rank: {autonomous['rank']}", inline=True)
+    if driver_control:
+        embed.add_field(name="TeleOp:", value=f":1234: OPR: {round(driver_control['value'], 3)} \n ---------- \n :medal: Rank: {driver_control['rank']}", inline=True)
+    if end_game:
+        embed.add_field(name="End Game:", value=f":1234: OPR: {round(end_game['value'], 3)} \n ---------- \n :medal: Rank: {end_game['rank']}", inline=True)
+
+    embed.set_footer(text=universal_footer)
+
+    if count:
+        embed.add_field(name=f"Count:", value=f"Rank is out {count} teams", inline=False)
+
+    await ctx.followup.send(embed=embed)
+
 
 @bot.event
 async def on_ready():
