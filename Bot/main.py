@@ -89,30 +89,32 @@ async def team_info_by_number(ctx: discord.Interaction, *, team_number: int):
     if team_name:
         embed.add_field(name="Team Name", value=team_name, inline=True)
     if school_name:
-        embed.add_field(name="School Name", value=school_name, inline=True)
+        embed.add_field(name=":school: School Name", value=school_name, inline=True)
     if sponsors:
-        embed.add_field(name="Sponsors", value=sponsors, inline=True)
+        embed.add_field(name=":money_with_wings: Sponsors", value=sponsors, inline=True)
     if rookie_year:
-        embed.add_field(name="Rookie Year", value=rookie_year, inline=True)
+        embed.add_field(name=":date: Rookie Year", value=rookie_year, inline=True)
     if website:
-        embed.add_field(name="Website", value=website, inline=True)
+        embed.add_field(name=":globe_with_meridians: Website", value=website, inline=True)
     if city and state and country:
-        embed.add_field(name="Location", value=f"{city}, {state}, {country}", inline=True)
+        embed.add_field(name=":round_pushpin: Location", value=f"{city}, {state}, {country} \n -----------------------------------------------------", inline=True)
+
+        
 
     # Add awards to the embed
     if awards:
         awards_description = ""
         for award in awards:
-            awards_description += f"**Season:** {award['season']} \n **Event:** {award['event']['name']} \n **Type:** {award['type']} \n **Placement:** {award['placement']}\n \n"
+            awards_description += f"**:calendar_spiral: Season:** {award['season']} \n **:round_pushpin: Event:** {award['event']['name']} \n **:receipt: Type:** {award['type']} \n **:military_medal: Placement:** {award['placement']}\n \n"
         if awards_description:
-            embed.add_field(name="Awards", value=awards_description, inline=False)
+            embed.add_field(name="Awards", value=f"{awards_description} -----------------------------------------------------", inline=False)
 
     embed.set_footer(text=universal_footer)
 
     await ctx.followup.send(embed=embed)
 
 @bot.tree.command(name='seasoninfo', description='Get season statistics for a certain team')
-async def season_info(ctx: discord.Interaction, *, team_number: int, season: int):
+async def season_info(ctx: discord.Interaction, *, team_number: int, season: int = 2024):
     await ctx.response.defer()
 
     query = '''
