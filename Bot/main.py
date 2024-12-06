@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.ui import View, Button
 import requests
 import os
 from dotenv import load_dotenv
@@ -14,10 +15,34 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 
 universal_footer = "Made by Liam from 22212, FTC Scout API"
 
+class Paginator(View):
+    def __init__(self, embeds):
+        super().__init__(timeout=None)
+        self.embeds = embeds
+        self.current_page = 0
+        self.update_buttons()
+
+    def update_buttons(self):
+        self.previous_page.disabled = self.current_page == 0
+        self.next_page.disabled = self.current_page == len(self.embeds) - 1
+
+    @discord.ui.button(label="Previous", style=discord.ButtonStyle.primary)
+    async def previous_page(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if self.current_page > 0:
+            self.current_page -= 1
+            self.update_buttons()
+            await interaction.response.edit_message(embed=self.embeds[self.current_page], view=self)
+
+    @discord.ui.button(label="Next", style=discord.ButtonStyle.primary)
+    async def next_page(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if self.current_page < len(self.embeds) - 1:
+            self.current_page += 1
+            self.update_buttons()
+            await interaction.response.edit_message(embed=self.embeds[self.current_page], view=self)
+
 @bot.tree.command(name='ping')
 async def ping(ctx: discord.Interaction):
     await ctx.response.defer()
-
     await ctx.followup.send('Pong!')
 
 @bot.tree.command(name='teaminfo', description='Generalized team info')
@@ -75,13 +100,12 @@ async def team_info_by_number(ctx: discord.Interaction, *, team_number: int):
     rookie_year = data['data']['teamByNumber']['rookieYear']
     website = data['data']['teamByNumber']['website']
 
-
-    #Location
+    # Location
     city = data['data']['teamByNumber']['location']['city']
     state = data['data']['teamByNumber']['location']['state']
     country = data['data']['teamByNumber']['location']['country']
 
-    #Awards
+    # Awards
     awards = data['data']['teamByNumber']['awards']
 
     embed = discord.Embed(title="Team: " + str(team_number), description="")
@@ -98,8 +122,6 @@ async def team_info_by_number(ctx: discord.Interaction, *, team_number: int):
         embed.add_field(name=":globe_with_meridians: Website", value=website, inline=True)
     if city and state and country:
         embed.add_field(name=":round_pushpin: Location", value=f"{city}, {state}, {country} \n -----------------------------------------------------", inline=True)
-
-        
 
     # Add awards to the embed
     if awards:
@@ -172,7 +194,7 @@ async def season_info(ctx: discord.Interaction, *, team_number: int, season: int
     await ctx.followup.send(embed=embed)
 
 @bot.tree.command(name="teamsearch", description="Search for a team by name")
-async def team_search(ctx: discord.Interaction, *, team_name: str, limit: int = 3, season: int = 2024):
+async def team_search(ctx: discord.Interaction, *, team_name: str, limit: int = 50, season: int = 2024):
     await ctx.response.defer()
     query = '''
     query teamSearch {
@@ -191,8 +213,7 @@ async def team_search(ctx: discord.Interaction, *, team_name: str, limit: int = 
 
     teams = data['data']['teamsSearch']
 
-    embed = discord.Embed(title=f"Teams with the name: {team_name}", description=f"Season: {season}", color=0x00ff00)
-
+    embeds = []
     if teams:
         teams_description = ""
         for team in teams:
@@ -204,13 +225,26 @@ async def team_search(ctx: discord.Interaction, *, team_name: str, limit: int = 
                     team_info += f"**Total OPR:** {round(total['value'], 3)} \n **Overall Rank:** {total['rank']} \n"
             team_info += "\n"
             if len(teams_description) + len(team_info) > 1024:
-                break
-            teams_description += team_info
+                embed = discord.Embed(title=f"Teams with the name: {team_name}", description=f"Season: {season}", color=0x00ff00)
+                embed.add_field(name="Teams", value=teams_description, inline=False)
+                embed.set_footer(text=universal_footer)
+                embeds.append(embed)
+                teams_description = team_info
+            else:
+                teams_description += team_info
         if teams_description:
+            embed = discord.Embed(title=f"Teams with the name: {team_name}", description=f"Season: {season}", color=0x00ff00)
             embed.add_field(name="Teams", value=teams_description, inline=False)
-    
-    embed.set_footer(text=universal_footer)
-    await ctx.followup.send(embed=embed)
+            embed.set_footer(text=universal_footer)
+            embeds.append(embed)
+
+    if embeds:
+        view = Paginator(embeds)
+        await ctx.followup.send(embed=embeds[0], view=view)
+    else:
+        embed = discord.Embed(title=f"Teams with the name: {team_name}", description="No teams found.", color=0xff0000)
+        embed.set_footer(text=universal_footer)
+        await ctx.followup.send(embed=embed)
 
 @bot.tree.command(name="gamemanual", description="Get a link to the game manual")
 async def game_manual(ctx: discord.Interaction):
@@ -245,8 +279,7 @@ async def help(ctx: discord.Interaction):
 
     embed.set_footer(text=universal_footer)
 
-    ctx.followup.send(embed=embed)
-
+    await ctx.followup.send(embed=embed)
 
 @bot.event
 async def on_ready():
