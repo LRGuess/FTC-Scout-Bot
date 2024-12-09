@@ -500,6 +500,147 @@ async def event_info(ctx: discord.Interaction, *, event_code: str, season: int =
         embed.set_footer(text=universal_footer)
         await ctx.followup.send(embed=embed) 
 
+@bot.tree.command(name="worldrecord", description="Get the world record for a certain season")
+async def world_record(ctx: discord.Interaction, season: int = 2024):
+    await ctx.response.defer()
+
+    query = '''
+    query worldRecord {
+        tradWorldRecord(season: 2024) {
+            tournamentLevel
+            description
+            event {
+                name
+                code
+                location {
+                    venue
+                    city
+                    state
+                    country
+                }
+                start
+                end
+                timezone
+            }
+            teams {
+                alliance
+                team {
+                    name
+                    number
+                }
+            }
+            scores {
+                __typename ... on MatchScores2024 {
+                    red {
+                        totalPoints
+                        totalPointsNp
+                        autoPoints
+                        dcPoints
+                        autoSampleNet
+                        autoSampleLow
+                        autoSampleHigh
+                        autoSpecimenLow
+                        autoSpecimenHigh
+                        dcSampleNet
+                        dcSampleLow
+                        dcSampleHigh
+                        dcSpecimenLow
+                        dcSpecimenHigh
+                        minorsCommitted
+                        majorsCommitted
+                        autoParkPoints
+                        autoSamplePoints
+                        autoSpecimenPoints
+                        dcParkPoints
+                        dcSamplePoints
+                        dcSpecimenPoints
+                    }
+                    blue {
+                        autoSampleNet
+                        autoSampleLow
+                        autoSampleHigh
+                        autoSpecimenLow
+                        autoSpecimenHigh
+                        dcSampleNet
+                        dcSampleLow
+                        dcSampleHigh
+                        dcSpecimenLow
+                        dcSpecimenHigh
+                        minorsCommitted
+                        majorsCommitted
+                        autoParkPoints
+                        autoSamplePoints
+                        autoSpecimenPoints
+                        dcParkPoints
+                        dcSamplePoints
+                        dcSpecimenPoints
+                    }
+                }
+            }
+        }
+    }
+    '''
+
+    response = requests.post(URL, json={'query': query})
+    data = response.json()
+
+    world_record = data['data']['tradWorldRecord']
+    event = world_record['event']
+    teams = world_record['teams']
+    tournament_level = world_record['tournamentLevel']
+    description = world_record['description']
+    name = event['name']
+    event_code = event['code']
+    location = event['location']
+    start = event['start']
+    end = event['end']
+    timezone = event['timezone']
+
+    embeds = []
+    embed = discord.Embed(title=f"World Record", description=f":calendar_spiral: Season: {season}", color=0x00ff00)
+    if name:
+        embed.add_field(name="Event Name", value=name, inline=False)
+    if event_code:
+        embed.add_field(name="Event code", value=event_code, inline=False)
+    if tournament_level:
+        embed.add_field(name="Tournament Level", value=tournament_level, inline=False)
+    if description:
+        embed.add_field(name="Description", value=description, inline=False)
+    if location:    
+        embed.add_field(name=":round_pushpin: Location", value=f"{location['venue']}, {location['city']}, {location['state']}, {location['country']}", inline=True)
+    if start:
+        embed.add_field(name=":clock10: Start Date", value=start, inline=False)
+    if end:
+        embed.add_field(name=":clock230: End Date", value=end, inline=False)
+    if timezone:
+        embed.add_field(name=":clock: Timezone", value=timezone, inline=False)
+
+    embeds.append(embed)
+
+    if teams:
+        team_description = ""
+        for team in teams:
+            team_info = f"**Team #:** {team['team']['number']} \n **Team Name:** {team['team']['name']} \n"
+            team_info += "\n"
+            if len(team_description) + len(team_info) > 1024:
+                embed = discord.Embed(title=f"Event: {name}", description=f":calendar_spiral: Season: {season}", color=0x00ff00)
+                embed.add_field(name="Teams", value=team_description, inline=False)
+                embed.set_footer(text=universal_footer)
+                embeds.append(embed)
+                team_description = team_info
+            else:
+                team_description += team_info
+        if team_description:
+            embed = discord.Embed(title=f"Event: {name}", description=f":calendar_spiral: Season: {season}", color=0x00ff00)
+            embed.add_field(name="Teams", value=team_description, inline=False)
+            embed.set_footer(text=universal_footer)
+            embeds.append(embed)
+
+    if embeds:
+        view = Paginator(embeds)
+        await ctx.followup.send(embed=embeds[0], view=view)
+
+
 @bot.tree.command(name="gamemanual", description="Get a link to the game manual")
 async def game_manual(ctx: discord.Interaction):
     await ctx.response.defer()
