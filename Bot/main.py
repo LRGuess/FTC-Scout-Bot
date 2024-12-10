@@ -544,6 +544,8 @@ async def event_info(ctx: discord.Interaction, *, event_code: str, season: int =
     if timezone:
         embed.add_field(name=":clock: Timezone", value=timezone, inline=False)
 
+    embed.set_footer(text=universal_footer)
+
     embeds.append(embed)
 
     if matches and show_matches:
@@ -741,6 +743,8 @@ async def world_record(ctx: discord.Interaction, season: int = 2024):
         embed.add_field(name=":clock230: End Date", value=end, inline=True)
     if timezone:
         embed.add_field(name=":clock: Timezone", value=timezone, inline=True)
+    
+    embed.set_footer(text=universal_footer)
 
     embeds.append(embed)
 
@@ -750,6 +754,8 @@ async def world_record(ctx: discord.Interaction, season: int = 2024):
             embed2.add_field(name="Red Alliance", value=f"Total Points: {red['totalPoints']} \n \n **Auto** \n **-------** \n Total: {red['autoPoints']} \n ------- \n *Samples:* \n ------- \n Net Zone: {red['autoSampleNet']} \n Low Basket: {red['autoSampleLow']} \n High Basket: {red['autoSampleHigh']} \n Total Sample: {red['autoSamplePoints']} \n ------- \n *Specimens* \n ------- \n Low Bar: {red['autoSpecimenLow']} \n High Bar: {red['autoSpecimenHigh']} \n Total Specimen Points {red['autoSpecimenPoints']} \n ------- \n *Park* \n ------- \n Park Points: {red['autoParkPoints']} \n **-------** \n **Drive Controlled** \n **-------** \n *Samples* \n ------- \n Net Zone: {red['dcSampleNet']} \n Low Basket: {red['dcSampleLow']} \n High Basket {red['dcSampleHigh']} \n Total Sample: {red['dcSamplePoints']} \n ------- \n *Specimens* \n ------- \n Low Bar: {red['dcSpecimenLow']} \n High Bar: {red['dcSpecimenHigh']} \n Total Specimen: {red['dcSpecimenPoints']} \n ------- \n *Park* \n ------- \n Park Points: {red['dcParkPoints']} \n **-------** \n *Penalties* \n **-------** \n Majors: {red['majorsCommitted']} \n Minors: {red['minorsCommitted']} \n Total Without Penalties: {red['totalPointsNp']}", inline=True)
         if blue['totalPoints']:
             embed2.add_field(name="Blue Alliance", value=f"Total Points: {blue['totalPoints']} \n \n **Auto** \n **-------** \n Total: {blue['autoPoints']} \n ------- \n *Samples:* \n ------- \n Net Zone: {blue['autoSampleNet']} \n Low Basket: {blue['autoSampleLow']} \n High Basket: {blue['autoSampleHigh']} \n Total Sample: {blue['autoSamplePoints']} \n ------- \n *Specimens* \n ------- \n Low Bar: {blue['autoSpecimenLow']} \n High Bar: {blue['autoSpecimenHigh']} \n Total Specimen Points {blue['autoSpecimenPoints']} \n ------- \n *Park* \n ------- \n Park Points: {blue['autoParkPoints']} \n **-------** \n **Drive Controlled** \n **-------** \n *Samples* \n ------- \n Net Zone: {blue['dcSampleNet']} \n Low Basket: {blue['dcSampleLow']} \n High Basket {blue['dcSampleHigh']} \n Total Sample: {blue['dcSamplePoints']} \n ------- \n *Specimens* \n ------- \n Low Bar: {blue['dcSpecimenLow']} \n High Bar: {blue['dcSpecimenHigh']} \n Total Specimen: {blue['dcSpecimenPoints']} \n ------- \n *Park* \n ------- \n Park Points: {blue['dcParkPoints']} \n **-------** \n *Penalties* \n **-------** \n Majors: {blue['majorsCommitted']} \n Minors: {blue['minorsCommitted']} \n Total Without Penalties: {blue['totalPointsNp']}", inline=True)        
+
+    embed2.set_footer(text=universal_footer)
 
     embeds.append(embed2)
 
@@ -805,6 +811,7 @@ async def game_manual(ctx: discord.Interaction):
     embed = discord.Embed(title="Game Manual", description="Here is the link to the game manual", color=0xf57f26)
     embed.add_field(name="Game Manual", value="[Game Manual](https://ftc-resources.firstinspires.org/file/ftc/game/manual)", inline=False)
 
+    embed.set_footer(text=universal_footer)
     await ctx.followup.send(embed=embed)
 
 @bot.tree.command(name='about', description='Get information about the bot')
