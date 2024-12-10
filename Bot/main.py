@@ -415,7 +415,15 @@ async def event_search(ctx: discord.Interaction, *, event_name: str, limit: int 
     response = requests.post(URL, json={'query': query})
     data = response.json()
 
-    events = data['data']['eventsSearch']
+    try:
+        events = data['data']['eventsSearch']
+    except:
+        events = None
+
+    if events == None:
+        embed = discord.Embed(title=f"Event {event_name} found", description="Please enter a valid event name", color=0xfc585b)
+        await ctx.followup.send(embed=embed)
+        return
 
     embeds = []
     if events:
