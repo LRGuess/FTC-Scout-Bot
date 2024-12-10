@@ -107,6 +107,7 @@ async def team_info_by_number(ctx: discord.Interaction, *, team_number: int):
     
     if teamByNumber == None:
         embed = discord.Embed(title="Team # not found", description="Please enter a valid team number", color=0xfc585b)
+        embed.set_footer(text=universal_footer)
         await ctx.followup.send(embed=embed)
         return
 
@@ -216,6 +217,7 @@ async def team_info_by_name(ctx: discord.Interaction, *, team_name: str):
     
     if teamByName == None:
         embed = discord.Embed(title="Team name not found", description="Please enter a valid team name, or use /teamsearch", color=0xfc585b)
+        embed.set_footer(text=universal_footer)
         await ctx.followup.send(embed=embed)
         return
 
@@ -307,6 +309,7 @@ async def season_info(ctx: discord.Interaction, *, team_number: int, season: int
     
     if teamByNumber == None:
         embed = discord.Embed(title="Team # not found", description="Please enter a valid team number", color=0xfc585b)
+        embed.set_footer(text=universal_footer)
         await ctx.followup.send(embed=embed)
         return
     
@@ -772,6 +775,27 @@ async def world_record(ctx: discord.Interaction, season: int = 2024):
     if embeds:
         view = Paginator(embeds)
         await ctx.followup.send(embed=embeds[0], view=view)
+
+@bot.tree.command(name="matchplayed", description="How many matches have been played until now!")
+async def matches_played(ctx: discord.Interaction, season: int = 2024):
+    await ctx.response.defer()
+
+    query = '''
+        query matchesPlayed {
+            matchesPlayedCount(season: ''' + str(season) + ''')
+        }
+    '''
+
+    response = requests.post(URL, json={'query': query})
+    data = response.json()
+
+    matches_played = data['data']['matchesPlayedCount']
+
+    embed = discord.Embed(title=f"Matches Played in {season}", color=0x00ff00)
+    embed.add_field(name=f"{matches_played}", value="That's a lot!", inline=False)
+
+    embed.set_footer(text=universal_footer)
+    await ctx.followup.send(embed=embed)
 
 
 @bot.tree.command(name="gamemanual", description="Get a link to the game manual")
