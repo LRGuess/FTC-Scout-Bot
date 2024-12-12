@@ -835,120 +835,120 @@ async def robot_inspection(ctx: discord.Interaction):
     inspection_footer = "Rule in Game Manual: "
 
     embeds = []
-    cover = discord.Embed(title="Robot / Field Inspection", description="Welcome to Robot inspection! This will simulate at-Comp robot inspection, but please not the in-person inspectors will always have the final say and this is nothing but a tool. Passing this inspection does not mean you are cometition-ready, it just means you are likly to pass as Comp!", color=0x00ff00)
+    cover = discord.Embed(title="Robot / Field Inspection", description="Welcome to Robot inspection! This will simulate at-Comp robot inspection, but please not the in-person inspectors will always have the final say and this is nothing but a tool. Passing this inspection does not mean you are cometition-ready, it just means you are likly to pass as Comp!", color=0x4472c4)
     cover.set_footer(text=universal_footer)
     embeds.append(cover)
 
     #Robot Size
 
-    I303 = discord.Embed(title="Robot - Size", description="ROBOT is presented at inspection with all MECHANISMS (including all COMPONENTS of each MECHANISM), configurations, and decorations used on the ROBOT. ")
+    I303 = discord.Embed(title="Robot - Size", description="ROBOT is presented at inspection with all MECHANISMS (including all COMPONENTS of each MECHANISM), configurations, and decorations used on the ROBOT. ", color=0x4472c4)
     I303.set_footer(text=inspection_footer + "I303")
     embeds.append(I303)
 
-    R101 = discord.Embed(title="Robot - Size", description="The ROBOT in all of its STARTING CONFIGURATIONS must fit within an 18” cube as it would start the MATCH.")
+    R101 = discord.Embed(title="Robot - Size", description="The ROBOT in all of its STARTING CONFIGURATIONS must fit within an 18” cube as it would start the MATCH.", color=0x4472c4)
     R101.set_footer(text=inspection_footer + "R101")
     embeds.append(R101)
 
-    R104 = discord.Embed(title="Robot - Size", description="ROBOT may not expand or reach outside of a 20” x 42” horizontal boundary at any time during the MATCH (may be hardware or software limited).")
+    R104 = discord.Embed(title="Robot - Size", description="ROBOT may not expand or reach outside of a 20” x 42” horizontal boundary at any time during the MATCH (may be hardware or software limited).", color=0x4472c4)
     R104.set_footer(text=inspection_footer + "R104")
     embeds.append(R104)
 
     #Robot Signs
-    R401 = discord.Embed(title="Robot - Signs", description="ROBOT has two ROBOT SIGNS that are located on opposite or adjacent sides of the ROBOT and visible to FIELD STAFF from at least 12 feet away and meet minimal size requirements.")
+    R401 = discord.Embed(title="Robot - Signs", description="ROBOT has two ROBOT SIGNS that are located on opposite or adjacent sides of the ROBOT and visible to FIELD STAFF from at least 12 feet away and meet minimal size requirements.", color=0x4472c4)
     R401.set_footer(text=inspection_footer + "R401")
     embeds.append(R401)
 
-    R402 = discord.Embed(title="Robot - Signs", description="ROBOT SIGNS can indicate both ALLIANCE colors and meets markings requirements, unpowered.")
+    R402 = discord.Embed(title="Robot - Signs", description="ROBOT SIGNS can indicate both ALLIANCE colors and meets markings requirements, unpowered.", color=0x4472c4)
     R402.set_footer(text=inspection_footer + "R402")
     embeds.append(R402)
 
-    R403 = discord.Embed(title="Robot - Signs", description="Team number is displayed on ROBOT SIGNS and meets number size requirements, unpowered.")
+    R403 = discord.Embed(title="Robot - Signs", description="Team number is displayed on ROBOT SIGNS and meets number size requirements, unpowered.", color=0x4472c4)
     R403.set_footer(text=inspection_footer + "R403")
     embeds.append(R403)
 
     #Robot Mechanical
-    R201R202 = discord.Embed(title="Robot - Mechanical", description="ROBOT does not contain any COMPONENTS that could harm people, damage the ARENA, or damage other ROBOTS. This includes sharp edges, protrusions, or hazards to the ARENA elements.")
+    R201R202 = discord.Embed(title="Robot - Mechanical", description="ROBOT does not contain any COMPONENTS that could harm people, damage the ARENA, or damage other ROBOTS. This includes sharp edges, protrusions, or hazards to the ARENA elements.", color=0x4472c4)
     R201R202.set_footer(text=inspection_footer + "R201, R202")
     embeds.append(R201R202)
 
-    R203B = discord.Embed(title="Robot - Mechanical", description="ROBOT does not contain devices that generate sound at a level sufficient to be a distraction.")
+    R203B = discord.Embed(title="Robot - Mechanical", description="ROBOT does not contain devices that generate sound at a level sufficient to be a distraction.", color=0x4472c4)
     R203B.set_footer(text=inspection_footer + "R203.B")
     embeds.append(R203B)
 
-    R203DEGH = discord.Embed(title="Robot - Mechanical", description="ROBOT does not contain materials that are hazardous (i.e., flammable materials/gasses, mercury switches, exposed untreated hazardous materials).")
+    R203DEGH = discord.Embed(title="Robot - Mechanical", description="ROBOT does not contain materials that are hazardous (i.e., flammable materials/gasses, mercury switches, exposed untreated hazardous materials).", color=0x4472c4)
     R203DEGH.set_footer(text=inspection_footer + "R203.D, E, G, H")
     embeds.append(R203DEGH)
 
-    R205 = discord.Embed(title="Robot - Mechanical", description="ROBOT does not contain materials that would cause a delay of game if released (e.g., coffee beans).")
+    R205 = discord.Embed(title="Robot - Mechanical", description="ROBOT does not contain materials that would cause a delay of game if released (e.g., coffee beans).", color=0x4472c4)
     R205.set_footer(text=inspection_footer + "R205")
     embeds.append(R205)
 
-    R207 = discord.Embed(title="Robot - Mechanical", description="ROBOT does not contain any closed air or hydraulic devices (i.e., gas springs, compressors, vacuum generating devices). Air-filled pneumatic wheels are exempt from this rule.")
+    R207 = discord.Embed(title="Robot - Mechanical", description="ROBOT does not contain any closed air or hydraulic devices (i.e., gas springs, compressors, vacuum generating devices). Air-filled pneumatic wheels are exempt from this rule.", color=0x4472c4)
     R207.set_footer(text=inspection_footer + "R207")
     embeds.append(R207)
 
-    R306R307 = discord.Embed(title="Robot - Mechanical", description="ROBOT does not contain prohibited COTS MECHANISMS (multi DoF, game task solving, …). ")
+    R306R307 = discord.Embed(title="Robot - Mechanical", description="ROBOT does not contain prohibited COTS MECHANISMS (multi DoF, game task solving, …). ", color=0x4472c4)
     R306R307.set_footer(text=inspection_footer + "R306, R307")
     embeds.append(R306R307)
 
     # Robot Electrical
-    R503 = discord.Embed(title="Robot - Electrical", description="ROBOT does not contain more than 8 allowed motors and 12 allowed servos.")
+    R503 = discord.Embed(title="Robot - Electrical", description="ROBOT does not contain more than 8 allowed motors and 12 allowed servos.", color=0x4472c4)
     R503.set_footer(text=inspection_footer + "R503")
     embeds.append(R503)
 
-    R504 = discord.Embed(title="Robot - Electrical", description="Actuators are not modified except as explicitly allowed.")
+    R504 = discord.Embed(title="Robot - Electrical", description="Actuators are not modified except as explicitly allowed.", color=0x4472c4)
     R504.set_footer(text=inspection_footer + "R504")
     embeds.append(R504)
 
-    R505 = discord.Embed(title="Robot - Electrical", description="Actuators are powered and controlled only from approved devices.")
+    R505 = discord.Embed(title="Robot - Electrical", description="Actuators are powered and controlled only from approved devices.", color=0x4472c4)
     R505.set_footer(text=inspection_footer + "R505")
     embeds.append(R505)
 
-    R506 = discord.Embed(title="Robot - Electrical", description="No relays, electromagnets, electrical solenoid actuators, or related systems.")
+    R506 = discord.Embed(title="Robot - Electrical", description="No relays, electromagnets, electrical solenoid actuators, or related systems.", color=0x4472c4)
     R506.set_footer(text=inspection_footer + "R506")
     embeds.append(R506)
 
-    R601R606 = discord.Embed(title="Robot - Electrical", description="Exactly 1 main battery pack of an approved type is on the ROBOT and it is properly connected to the main power switch, securely mounted.")
+    R601R606 = discord.Embed(title="Robot - Electrical", description="Exactly 1 main battery pack of an approved type is on the ROBOT and it is properly connected to the main power switch, securely mounted.", color=0x4472c4)
     R601R606.set_footer(text=inspection_footer + "R601, R606")
     embeds.append(R601R606)
 
-    R609 = discord.Embed(title="Robot - Electrical", description="Exactly 1 approved main power switch must control all power provided by the ROBOT battery pack and must be properly labeled. Secondary switches downstream are allowed if labeled “secondary.”")
+    R609 = discord.Embed(title="Robot - Electrical", description="Exactly 1 approved main power switch must control all power provided by the ROBOT battery pack and must be properly labeled. Secondary switches downstream are allowed if labeled “secondary.”", color=0x4472c4)
     R609.set_footer(text=inspection_footer + "R609")
     embeds.append(R609)
 
-    R602 = discord.Embed(title="Robot - Electrical", description="COTS USB batteries on the ROBOT remain isolated from the ROBOT power systems.")
+    R602 = discord.Embed(title="Robot - Electrical", description="COTS USB batteries on the ROBOT remain isolated from the ROBOT power systems.", color=0x4472c4)
     R602.set_footer(text=inspection_footer + "R602")
     embeds.append(R602)
 
-    R610R615 = discord.Embed(title="Robot - Electrical", description="Fuses must not be replaced with fuses of higher rating than allowed, no self-resetting fuses allowed.")
+    R610R615 = discord.Embed(title="Robot - Electrical", description="Fuses must not be replaced with fuses of higher rating than allowed, no self-resetting fuses allowed.", color=0x4472c4)
     R610R615.set_footer(text=inspection_footer + "R610, R615")
     embeds.append(R610R615)
 
-    R611 = discord.Embed(title="Robot - Electrical", description="If electronics are grounded to the ROBOT frame, the only approved methods are the REV or AndyMark resistive grounding strap and must be connected to a fully COTS XT30 COMPONENT.")
+    R611 = discord.Embed(title="Robot - Electrical", description="If electronics are grounded to the ROBOT frame, the only approved methods are the REV or AndyMark resistive grounding strap and must be connected to a fully COTS XT30 COMPONENT.", color=0x4472c4)
     R611.set_footer(text=inspection_footer + "R611")
     embeds.append(R611)
 
-    R613R618 = discord.Embed(title="Robot - Electrical", description="USTOM CIRCUITS cannot provide >5V regulated power and cannot alter critical power paths. Voltage and current monitoring is okay, as long as the effect is inconsequential.")
+    R613R618 = discord.Embed(title="Robot - Electrical", description="USTOM CIRCUITS cannot provide >5V regulated power and cannot alter critical power paths. Voltage and current monitoring is okay, as long as the effect is inconsequential.", color=0x4472c4)
     R613R618.set_footer(text=inspection_footer + "R613, R618")
     embeds.append(R613R618)
 
-    R615 = discord.Embed(title="Robot - Electrical", description="Circuits are wired with the appropriately sized insulated copper wire (non-SIGNAL LEVEL wires).")
+    R615 = discord.Embed(title="Robot - Electrical", description="Circuits are wired with the appropriately sized insulated copper wire (non-SIGNAL LEVEL wires).", color=0x4472c4)
     R615.set_footer(text=inspection_footer + "R615")
     embeds.append(R615)
 
-    R616 = discord.Embed(title="Robot - Electrical", description="All non-SIGNAL LEVEL wiring is consistently color-coded with different colors used for the positive (red, yellow, white, brown, or black with white stripe) and negative/common (black, blue) wires")
+    R616 = discord.Embed(title="Robot - Electrical", description="All non-SIGNAL LEVEL wiring is consistently color-coded with different colors used for the positive (red, yellow, white, brown, or black with white stripe) and negative/common (black, blue) wires", color=0x4472c4)
     R616.set_footer(text=inspection_footer + "R616")
     embeds.append(R616)
 
-    R701R704R705R711 = discord.Embed(title="Robot - Electrical", description="The ROBOT must be controlled via 1 ROBOT CONTROLLER (REV Control Hub via USB or RS485, or allowed Android device via USB). The ROBOT CONTROLLER must be visible for inspection.")
+    R701R704R705R711 = discord.Embed(title="Robot - Electrical", description="The ROBOT must be controlled via 1 ROBOT CONTROLLER (REV Control Hub via USB or RS485, or allowed Android device via USB). The ROBOT CONTROLLER must be visible for inspection.", color=0x4472c4)
     R701R704R705R711.set_footer(text=inspection_footer + "R701, R704, R705, R711")
     embeds.append(R701R704R705R711)
 
-    R714R715 = discord.Embed(title="Robot - Electrical", description="Only allowed USB devices connected to USB (no LEDs, etc.), webcams can only be single-sensor.")
+    R714R715 = discord.Embed(title="Robot - Electrical", description="Only allowed USB devices connected to USB (no LEDs, etc.), webcams can only be single-sensor.", color=0x4472c4)
     R714R715.set_footer(text=inspection_footer + "R714, R715")
     embeds.append(R714R715)
 
-    R716 = discord.Embed(title="Robot - Electrical", description="Self-contained video recording devices, if used, must turn off or disable wireless communication.")
+    R716 = discord.Embed(title="Robot - Electrical", description="Self-contained video recording devices, if used, must turn off or disable wireless communication.", color=0x4472c4)
     R716.set_footer(text=inspection_footer + "R716")
     embeds.append(R716)
 
@@ -1042,7 +1042,7 @@ async def robot_inspection(ctx: discord.Interaction):
     R713.set_footer(text=inspection_footer + "R713")
     embeds.append(R713)
 
-    Pass = discord.Embed(title=":tada:", description="Voila! My bot approves yours! Good luck at comp, and follow the real inspector's rules!")
+    Pass = discord.Embed(title=":tada:", description="Voila! My bot approves yours! Good luck at comp, and follow the real inspector's rules!", color=0x2db567)
     Pass.set_footer(text=universal_footer)
     embeds.append(Pass)
 
@@ -1050,7 +1050,7 @@ async def robot_inspection(ctx: discord.Interaction):
         view = Inspector(embeds)
         await ctx.followup.send(embed=embeds[0], view=view)
     else:
-        embed = discord.Embed(title=f"Somethign weird happened", description="Please report this error to the [support server]()! **Error code:** IN-53RV3", color=0xff0000)
+        embed = discord.Embed(title=f"Something weird happened", description="Please report this error to the [support server]()! **Error code:** IN-53RV3", color=0xcc1532)
         embed.set_footer(text=universal_footer)
         await ctx.followup.send(embed=embed)
 
