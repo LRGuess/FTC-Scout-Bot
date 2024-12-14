@@ -4,62 +4,18 @@ from discord.ui import View, Button
 import requests
 import os
 from dotenv import load_dotenv
+import Commands.teamInfoByNumber as teamInfoByNumber
+import Pages.paginator as Paginator
 
 load_dotenv()
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
-URL = 'https://api.ftcscout.org/graphql'
+URL = os.getenv('URL')
 
 intents = discord.Intents.default()
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
-universal_footer = "Made with ♥ by Liam from 22212, FTC Scout API"
-
-class Paginator(View):
-    def __init__(self, embeds):
-        super().__init__(timeout=None)
-        self.embeds = embeds
-        self.current_page = 0
-        self.update_buttons()
-
-    def update_buttons(self):
-        self.first_page.disabled = self.current_page == 0
-        self.previous_page.disabled = self.current_page == 0
-        self.next_page.disabled = self.current_page == len(self.embeds) - 1
-        self.last_page.disabled = self.current_page == len(self.embeds) - 1
-        self.page_indicator.label = f"Page {self.current_page + 1}/{len(self.embeds)}"
-
-    @discord.ui.button(label="First", style=discord.ButtonStyle.primary)
-    async def first_page(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if self.current_page > 0:
-            self.current_page = 0
-            self.update_buttons()
-            await interaction.response.edit_message(embed=self.embeds[self.current_page], view=self)
-
-    @discord.ui.button(label="Previous", style=discord.ButtonStyle.primary)
-    async def previous_page(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if self.current_page > 0:
-            self.current_page -= 1
-            self.update_buttons()
-            await interaction.response.edit_message(embed=self.embeds[self.current_page], view=self)
-
-    @discord.ui.button(label="Page 1/1", style=discord.ButtonStyle.secondary, disabled=True)
-    async def page_indicator(self, interaction: discord.Interaction, button: discord.ui.Button):
-        pass
-
-    @discord.ui.button(label="Next", style=discord.ButtonStyle.primary)
-    async def next_page(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if self.current_page < len(self.embeds) - 1:
-            self.current_page += 1
-            self.update_buttons()
-            await interaction.response.edit_message(embed=self.embeds[self.current_page], view=self)
-
-    @discord.ui.button(label="Last", style=discord.ButtonStyle.primary)
-    async def last_page(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if self.current_page < len(self.embeds) - 1:
-            self.current_page = len(self.embeds) - 1
-            self.update_buttons()
-            await interaction.response.edit_message(embed=self.embeds[self.current_page], view=self)
+universal_footer = os.getenv('UNI_FOOTER')
 
 class Inspector(View):
     def __init__(self, embeds):
@@ -88,112 +44,7 @@ class Inspector(View):
 
 @bot.tree.command(name='teaminfo', description='Generalized team info')
 async def team_info_by_number(ctx: discord.Interaction, *, team_number: int):
-    await ctx.response.defer()
-
-    query = '''
-    query teamByNumber {
-        teamByNumber(number: ''' + str(team_number) +''') {
-            name
-            schoolName
-            sponsors
-            location{
-                venue
-                city
-                state
-                country
-            }
-            rookieYear
-            website
-            awards{
-                season
-                eventCode
-                teamNumber
-                divisionName
-                personName
-                type
-                placement
-                team{
-                    number
-                }
-                event{
-                    name
-                }
-            }
-        }
-    }
-    '''
-    response = requests.post(URL, json={'query': query})
-    data = response.json()
-
-    try:
-        teamByNumber = data['data']['teamByNumber']
-    except:
-        teamByNumber = None
-    
-    if teamByNumber == None:
-        embed = discord.Embed(title="Team # not found", description="Please enter a valid team number", color=0xfc585b)
-        embed.set_footer(text=universal_footer)
-        await ctx.followup.send(embed=embed)
-        return
-
-    team_name = data['data']['teamByNumber']['name']
-    school_name = data['data']['teamByNumber']['schoolName']
-    sponsors = data['data']['teamByNumber']['sponsors']
-    rookie_year = data['data']['teamByNumber']['rookieYear']
-    website = data['data']['teamByNumber']['website']
-
-    # Location
-    city = data['data']['teamByNumber']['location']['city']
-    state = data['data']['teamByNumber']['location']['state']
-    country = data['data']['teamByNumber']['location']['country']
-
-    # Awards
-    awards = data['data']['teamByNumber']['awards']
-
-    embeds = []
-    embed = discord.Embed(title="Team: " + str(team_number), description="")
-
-    if team_name:
-        embed.add_field(name="Team Name", value=team_name, inline=True)
-    if school_name:
-        embed.add_field(name=":school: School Name", value=school_name, inline=True)
-    if sponsors:
-        embed.add_field(name=":money_with_wings: Sponsors", value=sponsors, inline=True)
-    if rookie_year:
-        embed.add_field(name=":date: Rookie Year", value=rookie_year, inline=True)
-    if website:
-        embed.add_field(name=":globe_with_meridians: Website", value=website, inline=True)
-    if city and state and country:
-        embed.add_field(name=":round_pushpin: Location", value=f"{city}, {state}, {country}", inline=True)
-
-    embeds.append(embed)
-
-    # Add awards to the embed
-    if awards:
-        awards_description = ""
-        for award in awards:
-            award_info = f"**:calendar_spiral: Season:** {award['season']} \n **:round_pushpin: Event:** {award['event']['name']} \n **:receipt: Type:** {award['type']} \n **:military_medal: Placement:** {award['placement']}\n \n"
-            if len(awards_description) + len(award_info) > 1024:
-                embed = discord.Embed(title="Team: " + str(team_number), description="")
-                embed.add_field(name="Awards", value=awards_description, inline=False)
-                embed.set_footer(text=universal_footer)
-                embeds.append(embed)
-                awards_description = award_info
-            else:
-                awards_description += award_info
-        if awards_description:
-            embed = discord.Embed(title="Team: " + str(team_number), description="")
-            embed.add_field(name="Awards", value=awards_description, inline=False)
-            embed.set_footer(text=universal_footer)
-            embeds.append(embed)
-
-    if embeds:
-        view = Paginator(embeds)
-        await ctx.followup.send(embed=embeds[0], view=view)
-    else:
-        embed = discord.Embed(title="Team: " + str(team_number), description="No awards found.", color=0xff0000)
-        embed.set_footer(text=universal_footer)
-        await ctx.followup.send(embed=embed)
+    await teamInfoByNumber.team_info_by_number(ctx, team_number=team_number)
 
 @bot.tree.command(name='teaminfomyname', description='Generalized team info')
 async def team_info_by_name(ctx: discord.Interaction, *, team_name: str):
