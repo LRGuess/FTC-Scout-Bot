@@ -11,6 +11,7 @@ import Commands.eventInfo as eventInfo
 import Commands.worldRecord as worldRecord
 import Commands.matchesPlayed as matchesPlayed
 import Commands.inspectRobot as inspect
+import Commands.gameManual as gameManual
 
 load_dotenv()
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
@@ -60,13 +61,7 @@ async def robot_inspection(ctx: discord.Interaction):
 
 @bot.tree.command(name="gamemanual", description="Get a link to the game manual")
 async def game_manual(ctx: discord.Interaction):
-    await ctx.response.defer()
-
-    embed = discord.Embed(title="Game Manual", description="Here is the link to the game manual", color=0xf57f26)
-    embed.add_field(name="Game Manual", value="[Game Manual](https://ftc-resources.firstinspires.org/file/ftc/game/manual)", inline=False)
-
-    embed.set_footer(text=universal_footer)
-    await ctx.followup.send(embed=embed)
+    await gameManual.game_manual(ctx)
 
 @bot.tree.command(name='about', description='Get information about the bot')
 async def about(ctx: discord.Interaction):
