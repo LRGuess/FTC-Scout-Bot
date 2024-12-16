@@ -53,7 +53,7 @@ async def event_info(ctx: discord.Interaction, *, event_code: str, season: int =
 async def world_record(ctx: discord.Interaction, season: int = 2024):
     await worldRecord.world_record(ctx, season=season)
 
-@bot.tree.command(name="matchplayed", description="How many matches have been played until now!")
+@bot.tree.command(name="matchesplayed", description="How many matches have been played until now!")
 async def matches_played(ctx: discord.Interaction, season: int = 2024):
     await matchesPlayed.matches_played(ctx, season=season)
 
