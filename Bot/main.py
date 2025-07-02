@@ -9,6 +9,7 @@ import Commands.teamSearch as teamSearch
 import Commands.eventSearch as eventSearch
 import Commands.eventInfo as eventInfo
 import Commands.worldRecord as worldRecord
+import Commands.matchInfo as matchInfo
 import Commands.matchesPlayed as matchesPlayed
 import Commands.inspectRobot as inspect
 import Commands.gameManual as gameManual
@@ -50,8 +51,12 @@ async def event_info(ctx: discord.Interaction, *, event_code: str, season: int =
     await eventInfo.event_info(ctx, event_code=event_code, season=season, show_teams=show_teams, show_matches=show_matches, show_awards=show_awards)
 
 @bot.tree.command(name="worldrecord", description="Get the world record for a certain season")
-async def world_record(ctx: discord.Interaction, season: int = 2024):
+async def world_record(ctx: discord.Interaction, *, season: int = 2024):
     await worldRecord.world_record(ctx, season=season)
+
+@bot.tree.command(name="matchinfo", description="Get information about a match from an event")
+async def match_info(ctx: discord.Interaction, event_code: str, match_id: str, season: int = 2024):
+    await matchInfo.match_info(ctx, event_code=event_code, match_id=match_id, season=season)
 
 @bot.tree.command(name="matchesplayed", description="How many matches have been played until now!")
 async def matches_played(ctx: discord.Interaction, season: int = 2024):
